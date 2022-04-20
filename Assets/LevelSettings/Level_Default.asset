@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae191d9f8266edd4787dac542afa77d0, type: 3}
+  m_Name: Level_Default
+  m_EditorClassIdentifier: 
+  _levelName: Level_Default
+  _levelSize: 5
+  _tokensMultiplier: 3
+  _characterPrefab: {fileID: 8641003531147539122, guid: 003e5e083585e304f8fcee0d30589544, type: 3}
+  _cameraPrefab: {fileID: 9197096973411942615, guid: dce852a146fbb654a9610219d3750155, type: 3}
+  _platformPrefab: {fileID: 8810352007139870838, guid: e87447095e1d0214eb4a51e6b4a8b309, type: 3}
+  _platformSize: 10
+  _finishPlatformPrefab: {fileID: 6042196217430869195, guid: 7f0d81a919245f146805b15337643513, type: 3}
+  _tokenPrefab: {fileID: 4735491734646459254, guid: 2703ca471a1182f4881ff600e2cd4119, type: 3}
