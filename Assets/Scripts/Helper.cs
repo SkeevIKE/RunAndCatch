@@ -8,8 +8,8 @@ namespace RunAndCatch
         void Strafe(Vector3 inputValue);        
     }
 
-    internal interface ILevelState
+    internal interface ILevelStatus
     {
-        void EnterState(Level_status levelStatus);
+        void EnterStatus(LevelManager levelStatus);
     }
 }

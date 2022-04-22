@@ -20,4 +20,6 @@ MonoBehaviour:
   _platformPrefab: {fileID: 8810352007139870838, guid: e87447095e1d0214eb4a51e6b4a8b309, type: 3}
   _platformSize: 10
   _finishPlatformPrefab: {fileID: 6042196217430869195, guid: 7f0d81a919245f146805b15337643513, type: 3}
-  _tokenPrefab: {fileID: 4735491734646459254, guid: 2703ca471a1182f4881ff600e2cd4119, type: 3}
+  _tokenPrefab: {fileID: 1713900757358052644, guid: 0d882391819893d4eb7c1c073ef01398, type: 3}
+  _particalBoxsPrefab: {fileID: 4230788304853714161, guid: 6ba25286b83e08046bde6f8ba0a5d2ee, type: 3}
+  _uiCanvasPrefab: {fileID: 9061350055062355376, guid: 718f1f659f50456429437a70bbcd5245, type: 3}

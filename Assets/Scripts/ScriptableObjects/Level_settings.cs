@@ -40,5 +40,13 @@ namespace RunAndCatch
         [SerializeField]
         private GameObject _tokenPrefab;
         internal GameObject TokenPrefab => _tokenPrefab;
+
+        [SerializeField]
+        private GameObject _particalBoxsPrefab;
+        internal GameObject ParticalBoxsPrefab => _particalBoxsPrefab;
+
+        [SerializeField]
+        private GameObject _uiCanvasPrefab;
+        internal GameObject UICanvasPrefab => _uiCanvasPrefab;
     }
 }
