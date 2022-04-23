@@ -5,7 +5,7 @@ namespace RunAndCatch
 {
     internal interface IControlled
     {
-        void Move();
+        void Move(bool isMove);
         void Strafe(Vector3 inputValue);
     }
 
