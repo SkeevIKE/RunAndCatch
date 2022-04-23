@@ -9,6 +9,10 @@ namespace RunAndCatch
         [SerializeField]
         private ParticleSystem[] _particleSystems;
 
+        [SerializeField]
+        private AudioSource _audioSource;
+
+
         private void Start()
         {
             if (_finishStandTransform == null)
@@ -20,10 +24,17 @@ namespace RunAndCatch
             {
                 Debug.LogWarning($"particle systems in {this}, can't be empty");
             }
+
+            _audioSource = GetComponent<AudioSource>();
+            if (_audioSource == null)
+            {
+                Debug.LogWarning($"audio source in {this}, can't be empty");
+            }
         }
 
         internal Transform FinalLevel()
         {
+            _audioSource.Play();
             foreach (var _particleSystem in _particleSystems)
             {
                 _particleSystem.Play();

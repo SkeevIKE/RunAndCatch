@@ -8,7 +8,7 @@ namespace RunAndCatch
         private LevelSettings levelSettings;
         internal LevelSettings LevelSettings => levelSettings;
 
-        internal UIMediator UIMediator { private get; set; }
+        internal UIMediator UIMediator { get; set; }
         internal InputHandler InputHandler { get; set; }
         internal CharacterMotor CharacterMotor { get; set; }
         internal FinishPlatform FinishPlatform { get; set; }
@@ -51,8 +51,5 @@ namespace RunAndCatch
                 levelStatusUpdate.UpdateStatus();
             }
         }
-
-
-
     }
 }

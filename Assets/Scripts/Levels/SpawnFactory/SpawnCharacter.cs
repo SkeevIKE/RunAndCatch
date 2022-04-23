@@ -9,7 +9,7 @@ namespace RunAndCatch
         // spawn a playable character
         internal override CharacterMotor SpawnAndGetObject()
         {
-            CharacterMotor characterMotor = SpawnHelper<CharacterMotor>.SpawnAndGetComponent(spawnGameObject: this);
+            CharacterMotor characterMotor = SpawnHelper<CharacterMotor>.SpawnAndGetComponent(spawnGameObject: this); 
             return characterMotor;
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,13 +21,15 @@ namespace RunAndCatch
         private const int _multiplierXDeltaRotation = 100;
         private const int _positionZCharacterOffset = 20;
         private const int _borderValue = 4;
-        private bool _isRun;        
         private float _currentYAngel;
         private float _currentStrafeDelta;
         private int _animatorRunID;
         private float _oldInputXPosition;
-        private Camera _camera;
-        
+        private Camera _camera;        
+
+        internal bool IsRun { get; private set; }
+        public event Action MoveDone;
+
         private void Start()
         {
             _camera = Camera.main;
@@ -36,10 +39,11 @@ namespace RunAndCatch
 
         void IControlled.Move()
         {
-            _isRun = !_isRun;
-            _animator.SetBool(_animatorRunID, _isRun);
+            IsRun = !IsRun;
+            _animator.SetBool(_animatorRunID, IsRun);
         }
 
+        // movement logic and turn calculation
         void IControlled.Strafe(Vector3 inputValue)
         {            
             var inputPoint = new Vector3(inputValue.x, inputValue.y, transform.position.z + _positionZCharacterOffset);
@@ -48,7 +52,7 @@ namespace RunAndCatch
             float xDelta = inputPosition.x - _oldInputXPosition;
             _oldInputXPosition = inputPosition.x;  
           
-            if (_isRun)
+            if (IsRun)
             {               
                 Vector3 newPosition = new Vector3(Mathf.Clamp(transform.position.x + xDelta * Time.deltaTime * _strafeSpeed, -_borderValue, _borderValue),
                                                   transform.position.y, transform.position.z);
@@ -62,6 +66,7 @@ namespace RunAndCatch
             RotationCharacter(xDelta);
         }
 
+        // character rotation
         private void RotationCharacter(float angelY)
         {
             _currentYAngel = Mathf.LerpAngle(_currentYAngel, angelY, Time.deltaTime * _rotationSpeed);
@@ -72,9 +77,10 @@ namespace RunAndCatch
 
         void ICharacterMoveToTarget.MoveToTarget(Transform target)
         {            
-                StartCoroutine(MoveTo(target));            
+              StartCoroutine(MoveTo(target));            
         }
 
+        // the final movement of the character to the target
         IEnumerator MoveTo(Transform target)
         {
             _animator.SetBool(_animatorRunID, true);
@@ -89,10 +95,9 @@ namespace RunAndCatch
             
             _animator.SetBool(_animatorRunID, false);
 
-
             var cameraTarget = new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z);
             transform.LookAt(cameraTarget);
-            yield return null;
+            MoveDone?.Invoke();
         }
     }
 }

@@ -68,7 +68,7 @@ namespace RunAndCatch
             var spawnCharacter = new SpawnCharacter(_levelSettings.CharacterPrefab, characterGroup.transform);
             _levelManager.CharacterMotor = spawnCharacter.SpawnAndGetObject();
             _levelManager.InputHandler = characterGroup.gameObject.AddComponent<InputHandler>();
-            _levelManager.InputHandler.Initialisation(_levelManager.CharacterMotor);
+            _levelManager.InputHandler.Initialisation(_levelManager.CharacterMotor);            
         }
 
         // create a camera group

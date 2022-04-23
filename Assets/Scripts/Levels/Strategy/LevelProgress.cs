@@ -6,7 +6,7 @@ namespace RunAndCatch
     {
         private LevelManager _levelManager;
         private float _startValue;
-        private float _finishDictanceValue;
+        private float _finishDistanceValue;
         private Transform _characterTransform;
 
         void ILevelStatus.EnterStatus(LevelManager levelStatus)
@@ -14,9 +14,10 @@ namespace RunAndCatch
             _levelManager = levelStatus;
             _characterTransform = levelStatus.CharacterMotor.transform;
             _startValue = _characterTransform.position.z;
-            _finishDictanceValue = levelStatus.LevelSettings.LevelSize * levelStatus.LevelSettings.PlatformSize - 5;            
+            _finishDistanceValue = levelStatus.LevelSettings.LevelSize * levelStatus.LevelSettings.PlatformSize - 5;            
         }
 
+        // tracking the distance traveled by the character
         void ILevelStatusUpdate.UpdateStatus()
         {
             float distance = CalculateDistance(_characterTransform.position.z);
@@ -30,7 +31,7 @@ namespace RunAndCatch
 
         private float CalculateDistance(float curentDictanceValue)
         {
-            return (curentDictanceValue - _startValue) / _finishDictanceValue;
+            return (curentDictanceValue - _startValue) / _finishDistanceValue;
         }
 
         

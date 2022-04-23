@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace RunAndCatch
@@ -14,8 +15,11 @@ namespace RunAndCatch
         [SerializeField]
         private Animator _animator;
 
-        private bool _isTaken;
+        [SerializeField]
+        private string _charcterTag;
+
         private int _animatorIsTakenID;
+        private AudioSource _audioSource;
 
         internal event Action<int> TokenIsTakenEvent;
 
@@ -36,8 +40,13 @@ namespace RunAndCatch
             {
                 Debug.LogWarning($"animator in {this}, can't be empty");
             }
-
             _animatorIsTakenID = Animator.StringToHash("Taken");
+
+            _audioSource = GetComponent<AudioSource>();
+            if (_audioSource == null)
+            {
+                Debug.LogWarning($"audio source in {this}, can't be empty");
+            }
         }
 
         private void Taken()
@@ -45,15 +54,19 @@ namespace RunAndCatch
             TokenIsTakenEvent?.Invoke(_tokenScoresValue);
             _animator.SetTrigger(_animatorIsTakenID);
             _particleSystem.Play();
-            _isTaken = true;
+            _audioSource.Play();
+            StartCoroutine(WaitParticleOff());
         }
 
-        private void LateUpdate()
+        IEnumerator WaitParticleOff()
         {
-            if (_isTaken && _particleSystem.isStopped)
-            {
-                Destroy(gameObject);
-            }
+            yield return new WaitUntil(() => _particleSystem.isStopped);
+            RemoveToken();
+        }
+
+        internal void RemoveToken()
+        {
+            Destroy(gameObject);
         }
 
         private void OnDestroy()
@@ -62,8 +75,12 @@ namespace RunAndCatch
         }
 
         private void OnTriggerEnter(Collider other)
-        {
-            Taken();
+        { 
+            if (other.tag == _charcterTag)
+            {
+                Taken();
+            }
+            
         }
     }
 }
