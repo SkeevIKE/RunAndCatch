@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace RunAndCatch
 {
-    internal class Camera_motor : MonoBehaviour
+    internal class CameraMotor : MonoBehaviour
     {        
         private Transform _cameraTarget;
 

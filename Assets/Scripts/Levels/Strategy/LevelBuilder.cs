@@ -4,118 +4,85 @@ using UnityEngine;
 namespace RunAndCatch
 {
     public class LevelBuilder : ILevelStatus
-    {
-        private const string spawnTokenPosition_tag = "SpawnTokenPosition";
-        private Level_settings _levelSettings;
-        private LevelManager _levelManager;
-
+    {       
+        private LevelSettings _levelSettings;
+        private LevelManager _levelManager;       
+       
         void ILevelStatus.EnterStatus(LevelManager levelManager)
         {
+           // Cursor.visible = false;
+           // Cursor.lockState = CursorLockMode.Confined;
             _levelManager = levelManager;
             _levelSettings = levelManager.LevelSettings;
 
-            Transform levelGroup = new GameObject($"{_levelSettings.LevelName}_Group").transform;
-            Transform tokensGroup = new GameObject("Tokens_Group").transform;
-            Transform characterGroup = new GameObject($"Character_Group").transform;
-            tokensGroup.SetParent(levelGroup);
-
-            BuildPlatforms(levelGroup, tokensGroup);
-            BuildCharacter(characterGroup);
+            BuildScene();
+            BuildCharacter();
+            BuildCamera();
             BuildUI();
 
-            levelManager.ChangeStatus(new LevelProgress());
+            _levelManager.ChangeStatus(new LevelProgress());
         }
 
         // create a scene from platforms and a finish platform
-        private void BuildPlatforms(Transform levelGroup, Transform tokensGroup)
-        {           
-            var spawnPosition = Vector3.zero;
-            bool isParticalSpawn = false;
-
-            for (int i = 0; i < _levelSettings.LevelSize; i++)
-            {
-                Transform platform = Object.Instantiate(_levelSettings.PlatformPrefab, spawnPosition, Quaternion.identity, levelGroup.transform).transform;
-                if (i > 0)
-                {
-                    SpawnTokens(tokensGroup, platform);
-                }
-                spawnPosition = new Vector3(0, 0, spawnPosition.z + _levelSettings.PlatformSize);
-
-                if (!isParticalSpawn && i >= (_levelSettings.LevelSize / 2))
-                {
-                    SpawnParticalsBoxes(levelGroup, platform);
-                    isParticalSpawn = true;
-                }
-            }
-
-            Object.Instantiate(_levelSettings.FinishPlatformPrefab, spawnPosition, Quaternion.identity, levelGroup);
-
-        }
-
-        // create particals boxes in middle level
-        private void SpawnParticalsBoxes(Transform levelGroup, Transform platform)
+        private void BuildScene()
         {
-           ParticleSystem[] particleSystems = Object.Instantiate(_levelSettings.ParticalBoxsPrefab, platform.position, Quaternion.identity, levelGroup)
-                                                                .GetComponentsInChildren<ParticleSystem>();
-            foreach (var partical in particleSystems)
-            {
-                UnityEngine.ParticleSystem.ShapeModule shapeModule = partical.shape;
-                shapeModule.scale = new Vector3(shapeModule.scale.x, shapeModule.scale.y, _levelSettings.LevelSize / 2);
-            }
+            // create scene groups
+            Transform levelGroup = new GameObject($"=== {_levelSettings.LevelName}_Group ===").transform;
+            Transform tokensGroup = new GameObject("--- Tokens_Group ---").transform;
+            tokensGroup.SetParent(levelGroup);
+
+            // spawn platforms
+            var spawnPlatforms = new SpawnPlatforms(_levelSettings.PlatformPrefab, levelGroup.transform, _levelSettings.LevelSize, _levelSettings.PlatformSize);
+            Transform[] platforms = spawnPlatforms.SpawnAndGetObjects();
+
+            // spawn tokens
+            var spawnTokens = new SpawnTokens(_levelSettings.TokenPrefab, tokensGroup, _levelSettings._TokensMultiplier, platforms);
+            Token[] tokens = spawnTokens.SpawnAndGetObjects();
+            SubscribeTokensEvent(tokens);
+
+            // spawn finish platform
+            var spawnFinishPlatform = new SpawnFinishPlatform(_levelSettings.FinishPlatformPrefab, levelGroup.transform, _levelSettings.LevelSize, _levelSettings.PlatformSize);
+            _levelManager.FinishPlatform = spawnFinishPlatform.SpawnAndGetObject();
+
+            // spawn particals boxes
+            var spawnParticalsBoxes = new SpawnParticalsBoxes(_levelSettings.ParticalBoxsPrefab, levelGroup.transform, _levelSettings.LevelSize, _levelSettings.PlatformSize);
+            spawnParticalsBoxes.Spawn();
         }
+        
 
-        // create tokens in random positions
-        private void SpawnTokens(Transform tokensGroup, Transform platform)
+        // subscribe to tokens event
+        private void SubscribeTokensEvent(Token[] tokens)
         {
-            var spawnPositionsList = new List<Transform>();
-            foreach (var transform in platform.GetComponentsInChildren<Transform>())
+            foreach (var token in tokens)
             {
-                if (transform.tag == spawnTokenPosition_tag)
-                {
-                    spawnPositionsList.Add(transform);
-                }
-            }
-
-            int tokensCount;
-            // checking that the token multiplier does not exceed the possible spawn position
-            if (_levelSettings._TokensMultiplier > spawnPositionsList.Count)
-            {
-                tokensCount = spawnPositionsList.Count;
-                Debug.LogWarning($"Token multiplier in {_levelSettings} exceeds the number of spawns position in {platform}, and is equal to it");
-            }
-            else
-            {
-                tokensCount = _levelSettings._TokensMultiplier;
-            }
-
-            int i = 0;
-            while (i < tokensCount)
-            {
-                int randomValue = Random.Range(0, spawnPositionsList.Count);
-                Token token = Object.Instantiate(_levelSettings.TokenPrefab, spawnPositionsList[randomValue].position, Quaternion.identity, tokensGroup)
-                                                 .GetComponent<Token>();
                 token.TokenIsTakenEvent += _levelManager.AddScoreToPalayer;
-
-                spawnPositionsList.RemoveAt(randomValue);
-                i++;
             }
         }
 
-        // create a playable character, input handler and camera
-        private void BuildCharacter(Transform characterGroup)
+        // create a playable character and input handler
+        private void BuildCharacter()
         {
-            Character_motor characterMotor = Object.Instantiate(_levelSettings.CharacterPrefab, Vector3.zero, Quaternion.identity, characterGroup.transform)
-                                                                .GetComponent<Character_motor>();
+            // create character group
+            Transform characterGroup = new GameObject($"=== Character_Group ===").transform;
 
-            characterGroup.gameObject.AddComponent<Input_handler>().Initialisation(characterMotor);
-            Object.Instantiate(_levelSettings.CameraPrefab).GetComponent<Camera_motor>().Initialisation(characterMotor.transform);
+            var spawnCharacter = new SpawnCharacter(_levelSettings.CharacterPrefab, characterGroup.transform);
+            _levelManager.CharacterMotor = spawnCharacter.SpawnAndGetObject();
+            _levelManager.InputHandler = characterGroup.gameObject.AddComponent<InputHandler>();
+            _levelManager.InputHandler.Initialisation(_levelManager.CharacterMotor);
+        }
 
+        // create a camera group
+        private void BuildCamera()
+        {
+            var spawnCamera = new SpawnCamera(_levelSettings.CameraPrefab, null);
+            _levelManager.CameraMotor = spawnCamera.SpawnAndGetObject();
+            _levelManager.CameraMotor.Initialisation(_levelManager.CharacterMotor.transform);
         }
 
         // create a UI
         private void BuildUI()
         {
           _levelManager.UIMediator =  Object.Instantiate(_levelSettings.UICanvasPrefab).GetComponent<UIMediator>();
-        }
+        }        
     }
 }

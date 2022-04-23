@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelName: Level_Default
   _levelSize: 5
-  _tokensMultiplier: 3
+  _tokensMultiplier: 4
   _characterPrefab: {fileID: 8641003531147539122, guid: 003e5e083585e304f8fcee0d30589544, type: 3}
   _cameraPrefab: {fileID: 9197096973411942615, guid: dce852a146fbb654a9610219d3750155, type: 3}
   _platformPrefab: {fileID: 8810352007139870838, guid: e87447095e1d0214eb4a51e6b4a8b309, type: 3}

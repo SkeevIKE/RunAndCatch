@@ -3,18 +3,18 @@ using UnityEngine;
 namespace RunAndCatch
 {
     [CreateAssetMenu(fileName = "New Level Settings", menuName = "RunAndCatch settings/Level settings", order = 51)]
-    public class Level_settings : ScriptableObject
+    public class LevelSettings : ScriptableObject
     {       
         [SerializeField]
         private string _levelName = "Level_Default";
         internal string LevelName => _levelName;
 
         [SerializeField] [Range(5, 25)]
-        private int _levelSize = 10;
+        private int _levelSize = 6;
         internal int LevelSize => _levelSize;
 
         [SerializeField] [Range(1, 9)]
-        private int _tokensMultiplier = 1;
+        private int _tokensMultiplier = 4;
         internal int _TokensMultiplier => _tokensMultiplier;
 
         [SerializeField]
@@ -30,7 +30,7 @@ namespace RunAndCatch
         internal GameObject PlatformPrefab => _platformPrefab;
 
         [SerializeField]
-        private int _platformSize = 5;
+        private int _platformSize = 10;
         internal int PlatformSize => _platformSize;
 
         [SerializeField]

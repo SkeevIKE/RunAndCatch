@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RunAndCatch
 {
-    internal class Input_handler : MonoBehaviour
+    internal class InputHandler : MonoBehaviour
     {        
         private IControlled _controlled;
        
@@ -16,7 +16,7 @@ namespace RunAndCatch
         {
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0))
             {              
-                _controlled.Run();                   
+                _controlled.Move();                   
             }                    
             _controlled.Strafe(Input.mousePosition);            
         }
