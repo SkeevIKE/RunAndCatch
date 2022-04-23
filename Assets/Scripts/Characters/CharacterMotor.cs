@@ -34,12 +34,12 @@ namespace RunAndCatch
         {
             _camera = Camera.main;
             _animator = GetComponent<Animator>();
-            _animatorRunID = Animator.StringToHash("isRun");
+            _animatorRunID = Animator.StringToHash("isRun");           
         }
 
-        void IControlled.Move()
+        void IControlled.Move(bool isMove)
         {
-            IsRun = !IsRun;
+            IsRun = isMove;
             _animator.SetBool(_animatorRunID, IsRun);
         }
 
