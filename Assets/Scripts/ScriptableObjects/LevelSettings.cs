@@ -4,7 +4,10 @@ namespace RunAndCatch
 {
     [CreateAssetMenu(fileName = "New Level Settings", menuName = "RunAndCatch settings/Level settings", order = 51)]
     public class LevelSettings : ScriptableObject
-    {       
+    {
+        [Space]
+        [Header("Level settings")]
+
         [SerializeField]
         private string _levelName = "Level_Default";
         internal string LevelName => _levelName;
@@ -16,6 +19,9 @@ namespace RunAndCatch
         [SerializeField] [Range(1, 9)]
         private int _tokensMultiplier = 4;
         internal int _TokensMultiplier => _tokensMultiplier;
+
+        [Space]
+        [Header("Prefabs links")]
 
         [SerializeField]
         private GameObject _characterPrefab;
@@ -48,5 +54,24 @@ namespace RunAndCatch
         [SerializeField]
         private GameObject _uiCanvasPrefab;
         internal GameObject UICanvasPrefab => _uiCanvasPrefab;
+
+        [Space]
+        [Header("Audio links")]
+
+        [SerializeField]
+        private AudioClip _musicAudioClip;
+        internal AudioClip MusicAudioClip => _musicAudioClip;
+
+        [SerializeField]
+        private AudioClip _tokenAudioClip;
+        internal AudioClip TokenAudioClip => _tokenAudioClip;
+
+        [Space]
+        [Header("Tokens audio clip volume")]
+
+        [SerializeField]
+        [Range(0.01f, 1)]
+        private float _tokensAudioClipVolume = 1;
+        internal float TokensAudioClipVolume => _tokensAudioClipVolume;
     }
 }

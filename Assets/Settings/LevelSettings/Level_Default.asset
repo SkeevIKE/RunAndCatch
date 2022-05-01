@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae191d9f8266edd4787dac542afa77d0, type: 3}
+  m_Name: Level_Default
+  m_EditorClassIdentifier: 
+  _levelName: Level_Default
+  _levelSize: 6
+  _tokensMultiplier: 4
+  _characterPrefab: {fileID: 8490600590478929539, guid: c0b10f7da42767146a4f72c66e51c2ee, type: 3}
+  _cameraPrefab: {fileID: 9197096973411942615, guid: dce852a146fbb654a9610219d3750155, type: 3}
+  _platformPrefab: {fileID: 8810352007139870838, guid: e87447095e1d0214eb4a51e6b4a8b309, type: 3}
+  _platformSize: 10
+  _finishPlatformPrefab: {fileID: 6567964435572000390, guid: 9e569df04ab100c4d9bb8a6a0029a2ed, type: 3}
+  _tokenPrefab: {fileID: 1713900757358052644, guid: 0d882391819893d4eb7c1c073ef01398, type: 3}
+  _particalBoxsPrefab: {fileID: 4230788304853714161, guid: 6ba25286b83e08046bde6f8ba0a5d2ee, type: 3}
+  _uiCanvasPrefab: {fileID: 8645748651311832224, guid: d91e97624cc98ad488aac9f9ddcf236a, type: 3}
+  _musicAudioClip: {fileID: 8300000, guid: 509383177d36c024a9ee075ffec2838e, type: 3}
+  _tokenAudioClip: {fileID: 8300000, guid: 4e4e644427bcfe24e9c038ae9784eb8e, type: 3}
+  _tokensAudioClipVolume: 1

@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace RunAndCatch
 {
-    internal class SpawnCamera : SpawnGameObject <CameraMotor>
+    internal class SpawnCamera : SpawnGameObject <CameraFollow>
     {
         public SpawnCamera(GameObject spawnObject, Transform spawnParent) : base(spawnObject,  spawnParent) { }
 
         // spawn a camera group
-        internal override CameraMotor SpawnAndGetObject()
+        internal override CameraFollow SpawnAndGetObject()
         {
-            CameraMotor characterMotor = SpawnHelper<CameraMotor>.SpawnAndGetComponent(spawnGameObject: this);
+            CameraFollow characterMotor = SpawnHelper<CameraFollow>.SpawnAndGetComponent(spawnGameObject: this);
             return characterMotor;
         }
     }

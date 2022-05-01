@@ -11,10 +11,9 @@ namespace RunAndCatch
 
         internal FootPrintPool FootPrintPool { private get; set; }
 
-        internal void FootPrinting(Vector3 position, Quaternion rotation)
+        internal void FootPrinting(Vector3 position)
         {
-            transform.position = position;
-            transform.rotation = rotation;
+            transform.position = position;            
             transform.SetParent(null);
             gameObject.SetActive(true);
 

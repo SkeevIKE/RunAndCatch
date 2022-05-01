@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace RunAndCatch
 {
-    internal class SpawnCharacter : SpawnGameObject <CharacterMotor>
+    internal class SpawnCharacter : SpawnGameObject <Character>
     {
         public SpawnCharacter(GameObject spawnObject, Transform spawnParent) : base(spawnObject, spawnParent) { }
 
         // spawn a playable character
-        internal override CharacterMotor SpawnAndGetObject()
+        internal override Character SpawnAndGetObject()
         {
-            CharacterMotor characterMotor = SpawnHelper<CharacterMotor>.SpawnAndGetComponent(spawnGameObject: this); 
+            Character characterMotor = SpawnHelper<Character>.SpawnAndGetComponent(spawnGameObject: this); 
             return characterMotor;
         }
     }

@@ -5,27 +5,34 @@ namespace RunAndCatch
 {
     public class LevelFinal : ILevelStatus
     {
-        private LevelManager _levelManager;
+        private Level _level;
+        private IMoveToTarget _moveToTarget;
 
-        void ILevelStatus.EnterStatus(LevelManager levelStatus)
+        void ILevelStatus.EnterStatus(Level level)
         {
-            _levelManager = levelStatus;
-            Object.Destroy(levelStatus.InputHandler);
-            levelStatus.InputHandler = null;
-            ((ICharacterMoveToTarget)_levelManager.CharacterMotor).MoveToTarget(_levelManager.FinishPlatform.FinalLevel());      // start of movement to the final point       
-            ((ICharacterMoveToTarget)_levelManager.CharacterMotor).MoveDone += ShowFinalScreen;         // subscribe for the event that the character has reached the final point           
-            _levelManager.UIMediator.SubscribeNextLevelBuutonEvent(NextLevel);                           // subscribe to the click of a next level button
+            _level = level;
+            Object.Destroy(level.InputHandler);
+            level.InputHandler = null;
+
+            _moveToTarget = _level.Character.gameObject.AddComponent<CharacterMoveToTarget>();
+            // start of movement to the final point     
+            _moveToTarget.MoveToTarget(_level.FinishPlatform.FinalLevel(), _level.Character);            
+            // subscribe for the event that the character has reached the final point   
+            _moveToTarget.MoveIsDone += ShowFinalScreen;   
+
+            _level.UIMediator.SubscribeNextLevelBuutonEvent(NextLevel);                                        
         }
 
         private void ShowFinalScreen()
         {
-            _levelManager.UIMediator.ShowFinalScreen();
+            _level.UIMediator.ShowFinalScreen();
         }
 
         private void NextLevel()
         {
-            ((ICharacterMoveToTarget)_levelManager.CharacterMotor).MoveDone -= ShowFinalScreen;
-            SceneManager.LoadScene(_levelManager.LevelSettings.LevelName);
+            _level.UIMediator.UnsubscribeNextLevelBuutonEvent(NextLevel);                                        
+            _moveToTarget.MoveIsDone -= ShowFinalScreen;
+            SceneManager.LoadScene(_level.LevelSettings.LevelName);
         }
     }
 }

@@ -23,26 +23,10 @@ namespace RunAndCatch
 
         private void Start()
         {
-            if (_finalScreen == null)
-            {
-                Debug.LogWarning($" final screen in {this}, can't be empty");
-            }
-
-
-            if (_imageDistanceBar == null)
-            {
-                Debug.LogWarning($"image distance bar in {this}, can't be empty");
-            }
-
-            if (_scoresText == null)
-            {
-                Debug.LogWarning($" scores text in {this}, can't be empty");
-            }
-
-            if (_nextLevelButton == null)
-            {
-                Debug.LogWarning($" nextLevel button in {this}, can't be empty");
-            }
+            if (_finalScreen == null) Debug.LogWarning($" final screen in {this}, can't be empty"); 
+            if (_imageDistanceBar == null) Debug.LogWarning($"image distance bar in {this}, can't be empty");
+            if (_scoresText == null) Debug.LogWarning($" scores text in {this}, can't be empty");
+            if (_nextLevelButton == null) Debug.LogWarning($" nextLevel button in {this}, can't be empty");           
 
             _nextLevelButton.GetComponent<Image>().alphaHitTestMinimumThreshold = _alphaThreshold;
         }
@@ -60,6 +44,11 @@ namespace RunAndCatch
         internal void SubscribeNextLevelBuutonEvent(UnityAction unityAction)
         {            
             _nextLevelButton.onClick.AddListener(unityAction);
+        }
+
+        internal void UnsubscribeNextLevelBuutonEvent(UnityAction unityAction)
+        {
+            _nextLevelButton.onClick.RemoveListener(unityAction);
         }
 
         internal void ShowFinalScreen()

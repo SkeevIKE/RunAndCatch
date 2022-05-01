@@ -6,21 +6,19 @@ namespace RunAndCatch
     public class LevelBuilder : ILevelStatus
     {       
         private LevelSettings _levelSettings;
-        private LevelManager _levelManager;       
+        private Level _level;       
        
-        void ILevelStatus.EnterStatus(LevelManager levelManager)
-        {
-           // Cursor.visible = false;
-           // Cursor.lockState = CursorLockMode.Confined;
-            _levelManager = levelManager;
-            _levelSettings = levelManager.LevelSettings;
+        void ILevelStatus.EnterStatus(Level level)
+        {           
+            _level = level;
+            _levelSettings = level.LevelSettings;
 
             BuildScene();
             BuildCharacter();
             BuildCamera();
             BuildUI();
 
-            _levelManager.ChangeStatus(new LevelProgress());
+            _level.ChangeStatus(new LevelProgress());
         }
 
         // create a scene from platforms and a finish platform
@@ -42,7 +40,7 @@ namespace RunAndCatch
 
             // spawn finish platform
             var spawnFinishPlatform = new SpawnFinishPlatform(_levelSettings.FinishPlatformPrefab, levelGroup.transform, _levelSettings.LevelSize, _levelSettings.PlatformSize);
-            _levelManager.FinishPlatform = spawnFinishPlatform.SpawnAndGetObject();
+            _level.FinishPlatform = spawnFinishPlatform.SpawnAndGetObject();
 
             // spawn particals boxes
             var spawnParticalsBoxes = new SpawnParticalsBoxes(_levelSettings.ParticalBoxsPrefab, levelGroup.transform, _levelSettings.LevelSize, _levelSettings.PlatformSize);
@@ -55,7 +53,7 @@ namespace RunAndCatch
         {
             foreach (var token in tokens)
             {
-                token.TokenIsTakenEvent += _levelManager.AddScoreToPalayer;
+                token.TokenIsTakenEvent += _level.AddScoreToPalayer;
             }
         }
 
@@ -66,23 +64,23 @@ namespace RunAndCatch
             Transform characterGroup = new GameObject($"=== Character_Group ===").transform;
 
             var spawnCharacter = new SpawnCharacter(_levelSettings.CharacterPrefab, characterGroup.transform);
-            _levelManager.CharacterMotor = spawnCharacter.SpawnAndGetObject();
-            _levelManager.InputHandler = characterGroup.gameObject.AddComponent<InputHandler>();
-            _levelManager.InputHandler.Initialisation(_levelManager.CharacterMotor);            
+            _level.Character = spawnCharacter.SpawnAndGetObject();
+            _level.InputHandler = characterGroup.gameObject.AddComponent<InputHandler>();                     
+            _level.Character.Initialization(_level.InputHandler);
         }
 
         // create a camera group
         private void BuildCamera()
         {
             var spawnCamera = new SpawnCamera(_levelSettings.CameraPrefab, null);
-            _levelManager.CameraMotor = spawnCamera.SpawnAndGetObject();
-            _levelManager.CameraMotor.Initialisation(_levelManager.CharacterMotor.transform);
+            _level.CameraMotor = spawnCamera.SpawnAndGetObject();
+            _level.CameraMotor.Initialisation(_level.Character.transform);
         }
 
         // create a UI
         private void BuildUI()
         {
-          _levelManager.UIMediator =  Object.Instantiate(_levelSettings.UICanvasPrefab).GetComponent<UIMediator>();
+          _level.UIMediator =  Object.Instantiate(_levelSettings.UICanvasPrefab).GetComponent<UIMediator>();
         }        
     }
 }
