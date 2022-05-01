@@ -3,21 +3,31 @@ using UnityEngine;
 
 namespace RunAndCatch
 {
-    internal interface IControlled
+    internal interface IInputHandler
     {
-        void Move(bool isMove);
-        void Strafe(Vector3 inputValue);
+        event Action<bool> LeftMouseButtonDownEvent;
+        event Action<Vector3> MousePositionEvent;
     }
 
-    internal interface ICharacterMoveToTarget
+    internal interface IMovement
+    {      
+        void Move(Vector3 inputValue, bool isMove);
+    }
+
+    internal interface IPlayAnimation
     {
-        event Action MoveDone;
-        void MoveToTarget(Transform target);        
+        void AnimationMove(bool isMove);       
+    }
+
+    internal interface IMoveToTarget
+    {
+        event Action MoveIsDone;
+        void MoveToTarget(Transform target, Character character);        
     }
 
     internal interface ILevelStatus
     {
-        void EnterStatus(LevelManager levelStatus);       
+        void EnterStatus(Level level);       
     }
 
     internal interface ILevelStatusUpdate
@@ -26,7 +36,7 @@ namespace RunAndCatch
     }
 
 
-    internal class SpawnHelper <T>
+    internal class SpawnHelper <T> where T : Component
     {
         // creates an object and returns a component, the spawner type is passed to the argument with the required component to return
         internal static T SpawnAndGetComponent(SpawnGameObject<T> spawnGameObject)

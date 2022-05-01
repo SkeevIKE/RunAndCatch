@@ -22,4 +22,7 @@ MonoBehaviour:
   _finishPlatformPrefab: {fileID: 6567964435572000390, guid: 9e569df04ab100c4d9bb8a6a0029a2ed, type: 3}
   _tokenPrefab: {fileID: 1713900757358052644, guid: 0d882391819893d4eb7c1c073ef01398, type: 3}
   _particalBoxsPrefab: {fileID: 4230788304853714161, guid: 6ba25286b83e08046bde6f8ba0a5d2ee, type: 3}
-  _uiCanvasPrefab: {fileID: 9061350055062355376, guid: 718f1f659f50456429437a70bbcd5245, type: 3}
+  _uiCanvasPrefab: {fileID: 8645748651311832224, guid: d91e97624cc98ad488aac9f9ddcf236a, type: 3}
+  _musicAudioClip: {fileID: 8300000, guid: 509383177d36c024a9ee075ffec2838e, type: 3}
+  _tokenAudioClip: {fileID: 8300000, guid: 4e4e644427bcfe24e9c038ae9784eb8e, type: 3}
+  _tokensAudioClipVolume: 1

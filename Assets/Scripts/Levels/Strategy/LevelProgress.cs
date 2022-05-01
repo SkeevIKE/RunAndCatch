@@ -4,28 +4,29 @@ namespace RunAndCatch
 {
     internal class LevelProgress : ILevelStatus, ILevelStatusUpdate
     {
-        private LevelManager _levelManager;
+        private Level _level;
         private float _startValue;
         private float _finishDistanceValue;
         private Transform _characterTransform;
+        private const int halfValue = 2;
 
-        void ILevelStatus.EnterStatus(LevelManager levelStatus)
+        void ILevelStatus.EnterStatus(Level level)
         {
-            _levelManager = levelStatus;
-            _characterTransform = levelStatus.CharacterMotor.transform;
+            _level = level;
+            _characterTransform = level.Character.transform;
             _startValue = _characterTransform.position.z;
-            _finishDistanceValue = levelStatus.LevelSettings.LevelSize * levelStatus.LevelSettings.PlatformSize - 5;            
+            _finishDistanceValue = (level.LevelSettings.LevelSize * level.LevelSettings.PlatformSize) - (level.LevelSettings.PlatformSize / halfValue);            
         }
 
         // tracking the distance traveled by the character
         void ILevelStatusUpdate.UpdateStatus()
         {
             float distance = CalculateDistance(_characterTransform.position.z);
-            _levelManager.ChangeDistanceToFinish(distance);
+            _level.ChangeDistanceToFinish(distance);
 
             if (distance >= 1)
             {
-                _levelManager.ChangeStatus(new LevelFinal());
+                _level.ChangeStatus(new LevelFinal());
             }
         }
 
